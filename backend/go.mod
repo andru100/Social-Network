@@ -1,10 +1,9 @@
-module backend
+module github.com/andru100/Social-Network/backend
 
 go 1.18
 
 require (
 	github.com/aws/aws-sdk-go v1.43.41
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.7
 	go.mongodb.org/mongo-driver v1.9.0
 )

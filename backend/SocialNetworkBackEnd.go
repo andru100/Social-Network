@@ -1,26 +1,7 @@
 package main
 
 import (
-        "context"
-        "fmt"
-        "sort"
-        "log"
-        "time"
-        "net/http"
-        "github.com/gin-gonic/gin"
-        "go.mongodb.org/mongo-driver/mongo"
-        "go.mongodb.org/mongo-driver/mongo/options"
-        "go.mongodb.org/mongo-driver/bson/primitive"
-        "go.mongodb.org/mongo-driver/bson"
-        "github.com/aws/aws-sdk-go/aws"
-        "github.com/aws/aws-sdk-go/aws/session"
-        "github.com/aws/aws-sdk-go/service/s3"
-        "github.com/aws/aws-sdk-go/service/s3/s3manager"
-        "strings"
-        "os"
-        "io/ioutil"
-        "encoding/json"
-        "github.com/dgrijalva/jwt-go"
+        "github.com/andru100/Social-Network/backend/pkg"
 )
 
 func main() {
