@@ -16,17 +16,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 )
 
-// connect db globally so all funcs can use client rather than waste connections
-var clientOptions = options.Client().ApplyURI("mongodb+srv://andru:1q1q1q@cluster0.tccti.mongodb.net/cluster0?retryWrites=true&w=majority") // Set client options
-
-var  client, err = mongo.Connect(context.TODO(), clientOptions) // Connect to MongoDB
-   
-var err1 = client.Ping(context.TODO(), nil) // Check the connection
-
-var sess, err2 = session.NewSession(&aws.Config{ //start a aws session by setting the region
-Region: aws.String("us-east-2")},
-)
-
 func Stdget(c *gin.Context) {// gets comments for a specified user/ all users if on home feed page
     
     type qrystruct struct { 
@@ -41,7 +30,7 @@ func Stdget(c *gin.Context) {// gets comments for a specified user/ all users if
     }
  
     
-    collection := client.Database("datingapp").Collection("userdata")// connect to db and collection.
+    collection := Client.Database("datingapp").Collection("userdata")// connect to db and collection.
 
     currentDoc := MongoFields{}
 
@@ -98,7 +87,7 @@ func Stdget(c *gin.Context) {// gets comments for a specified user/ all users if
         
         c.IndentedJSON(http.StatusOK, json2send)
     } else if qry.Page == "media" { // if page is users media section
-        err = collection.FindOne(ctx, bson.M{"Username": qry.UserName}).Decode(&currentDoc)
+        err := collection.FindOne(ctx, bson.M{"Username": qry.UserName}).Decode(&currentDoc)
 
         c.IndentedJSON(http.StatusOK, currentDoc)
 

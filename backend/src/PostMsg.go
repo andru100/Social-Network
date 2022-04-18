@@ -16,17 +16,6 @@ import (
         "github.com/aws/aws-sdk-go/aws/session"
 )
 
-// connect db globally so all funcs can use client rather than waste connections
-var clientOptions = options.Client().ApplyURI("mongodb+srv://andru:1q1q1q@cluster0.tccti.mongodb.net/cluster0?retryWrites=true&w=majority") // Set client options
-
-var  client, err = mongo.Connect(context.TODO(), clientOptions) // Connect to MongoDB
-   
-var err1 = client.Ping(context.TODO(), nil) // Check the connection
-
-var sess, err2 = session.NewSession(&aws.Config{ //start a aws session by setting the region
-Region: aws.String("us-east-2")},
-)
-
 func PostMsg(c *gin.Context) {// std post creates doc from query, finds it and returns it
 
 
@@ -35,7 +24,7 @@ func PostMsg(c *gin.Context) {// std post creates doc from query, finds it and r
         Updatetype  string  `bson:"Updatetype" json:"Updatetype"`
         IsReply  string  `bson:"IsReply" json:"IsReply"`// see if msg is a reply to post
         LikeSent Likes   `bson:"LikeSent" json:"LikeSent"`
-        ReplyCmt msgCmts `bson:"ReplyCmt" json:"ReplyCmt"`
+        ReplyCmt MsgCmts `bson:"ReplyCmt" json:"ReplyCmt"`
         PostIndx   int     `bson:"PostIndx" json:"PostIndx"` // used to add comments to specific post
         Key2updt string     `bson:"Key2updt" json:"Key2updt"`
         Value2updt  PostData `bson:"Value2updt" json:"Value2updt"`
@@ -49,14 +38,14 @@ func PostMsg(c *gin.Context) {// std post creates doc from query, finds it and r
         return
     }
     
-    collection := client.Database("datingapp").Collection("userdata")
+    collection := Client.Database("datingapp").Collection("userdata")
     
     currentDoc := MongoFields{}
 
     ctx, _ := context.WithTimeout(context.Background(), 15*time.Second)
     
     // Find the document that mathes the id from the request. call the collection's Find() method and return object into result
-    err = collection.FindOne(ctx, bson.M{"Username": reqbody.Value2updt.Username}).Decode(&currentDoc)
+    err := collection.FindOne(ctx, bson.M{"Username": reqbody.Value2updt.Username}).Decode(&currentDoc)
 
     //create filter 
     filter := bson.M{"Username": ""}
@@ -92,7 +81,7 @@ func PostMsg(c *gin.Context) {// std post creates doc from query, finds it and r
     }
     
     //put to db
-    _, err := collection.UpdateOne(context.TODO(), filter, update)
+    _, err = collection.UpdateOne(context.TODO(), filter, update)
     if err != nil {
         log.Fatal(err)
     }

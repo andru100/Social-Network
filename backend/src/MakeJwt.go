@@ -30,5 +30,4 @@ func Makejwt (userid string, isauth bool) string {
 	 fmt.Printf("jwt created %v %v", ss, err)
 	 return ss
  
- 
  }

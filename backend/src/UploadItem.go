@@ -14,18 +14,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
-// connect db globally so all funcs can use client rather than waste connections
-var clientOptions = options.Client().ApplyURI("mongodb+srv://andru:1q1q1q@cluster0.tccti.mongodb.net/cluster0?retryWrites=true&w=majority") // Set client options
-
-var  client, err = mongo.Connect(context.TODO(), clientOptions) // Connect to MongoDB
-   
-var err1 = client.Ping(context.TODO(), nil) // Check the connection
-
-var sess, err2 = session.NewSession(&aws.Config{ //start a aws session by setting the region
-Region: aws.String("us-east-2")},
-)
-var uniqueadr = "ajh46unique"
-
 func Uploaditem (bucket string, filename string, filebytes []byte) string {// upload file to s3 with the bucket name and file adress passed to it
 
     tmpfile, err := ioutil.TempFile("", "example")// create temp file using naming convention.. it'll ad random stuff
@@ -51,22 +39,22 @@ func Uploaditem (bucket string, filename string, filebytes []byte) string {// up
 
     defer file.Close()// clean up
  
-    uploader := s3manager.NewUploader(sess)
+    uploader := s3manager.NewUploader(Sess)
     
     result, err := uploader.Upload(&s3manager.UploadInput{// upload file
-    Bucket: aws.String(bucket+uniqueadr),
+    Bucket: aws.String(bucket+Uniqueadr),
     Key: aws.String(filename),
     Body: file,
     })
     
     if err != nil {
         // Print the error and exit.
-        fmt.Printf("Unable to upload %q to %q, %v\n", filename, bucket+uniqueadr, err)
+        fmt.Printf("Unable to upload %q to %q, %v\n", filename, bucket+Uniqueadr, err)
     } else {
         fmt.Println("return result after upload is", result)
     }
 
-    fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket+uniqueadr)
+    fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket+Uniqueadr)
     return result.Location
 
 } 

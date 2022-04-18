@@ -15,17 +15,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 )
 
-// connect db globally so all funcs can use client rather than waste connections
-var clientOptions = options.Client().ApplyURI("mongodb+srv://andru:1q1q1q@cluster0.tccti.mongodb.net/cluster0?retryWrites=true&w=majority") // Set client options
-
-var  client, err = mongo.Connect(context.TODO(), clientOptions) // Connect to MongoDB
-   
-var err1 = client.Ping(context.TODO(), nil) // Check the connection
-
-var sess, err2 = session.NewSession(&aws.Config{ //start a aws session by setting the region
-Region: aws.String("us-east-2")},
-)
-
 func Updatebio(c *gin.Context) {// updates user bio section
 
 
@@ -44,7 +33,7 @@ func Updatebio(c *gin.Context) {// updates user bio section
         return
     }
  
-    collection := client.Database("datingapp").Collection("userdata")
+    collection := Client.Database("datingapp").Collection("userdata")
 
     filter := bson.M{"Username": reqbody.Username}
 

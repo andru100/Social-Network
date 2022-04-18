@@ -15,23 +15,12 @@ package social
 		"github.com/aws/aws-sdk-go/aws/session"
 	)
 
-// connect db globally so all funcs can use client rather than waste connections
-var clientOptions = options.Client().ApplyURI("mongodb+srv://andru:1q1q1q@cluster0.tccti.mongodb.net/cluster0?retryWrites=true&w=majority") // Set client options
-
-var  client, err = mongo.Connect(context.TODO(), clientOptions) // Connect to MongoDB
-   
-var err1 = client.Ping(context.TODO(), nil) // Check the connection
-
-var sess, err2 = session.NewSession(&aws.Config{ //start a aws session by setting the region
-Region: aws.String("us-east-2")},
-)
-
 func Signup (c *gin.Context) {// takes id and sets up bucket and mongodb
     userid := c.Param("userid") // get id from url request
     fmt.Println("userid is ", userid)
-    createbucket(userid) // create bucket to store users files
+    social.createbucket(userid) // create bucket to store users files
 
-    var reqbody usrsignin // declare new instance of struct type
+    var reqbody Usrsignin // declare new instance of struct type
 
     if err := c.BindJSON(&reqbody); err != nil {
         fmt.Println(err)
@@ -39,7 +28,7 @@ func Signup (c *gin.Context) {// takes id and sets up bucket and mongodb
     }
  
     
-    collection := client.Database("datingapp").Collection("userdata")// connect to db and collection.
+    collection := Client.Database("datingapp").Collection("userdata")// connect to db and collection.
     
     //post to db
     insertResult, err := collection.InsertOne(context.TODO(), reqbody)

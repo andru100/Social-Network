@@ -10,22 +10,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/aws/Session"
 	"github.com/aws/aws-sdk-go/service/s3"
     "github.com/gin-gonic/gin"
 )
-
-// connect db globally so all funcs can use client rather than waste connections
-var clientOptions = options.Client().ApplyURI("mongodb+srv://andru:1q1q1q@cluster0.tccti.mongodb.net/cluster0?retryWrites=true&w=majority") // Set client options
-
-var  client, err = mongo.Connect(context.TODO(), clientOptions) // Connect to MongoDB
-   
-var err1 = client.Ping(context.TODO(), nil) // Check the connection
-
-var sess, err2 = session.NewSession(&aws.Config{ //start a aws session by setting the region
-Region: aws.String("us-east-2")},
-)
-var uniqueadr = "ajh46unique"
 
 func Connectedmngo (err error, err1 error) { // prints connected if all error checks passed
     if err != nil || err1 != nil {
@@ -46,7 +34,7 @@ func Connectedaws (err2 error) { // prints connected to aws if all error checks 
 
 func Listbuckets () {
 	// Create S3 service client
-   svc := s3.New(sess)
+   svc := s3.New(Sess)
    
    // list all buckets
    result, err := svc.ListBuckets(nil)
@@ -64,35 +52,35 @@ func Listbuckets () {
 
 func Createbucket (bucketname string) {// creates a s3 bucket with the name passed to it
 	// Create S3 service client
-   svc := s3.New(sess)
+   svc := s3.New(Sess)
    
    _, err := svc.CreateBucket(&s3.CreateBucketInput{
-   Bucket: aws.String(bucketname+uniqueadr),// make bucket name unique
+   Bucket: aws.String(bucketname+Uniqueadr),// make bucket name unique
    })
    if err != nil {
-		fmt.Println("Unable to create bucket %q, %v", bucketname+uniqueadr, err)
+		fmt.Println("Unable to create bucket %q, %v", bucketname+Uniqueadr, err)
    }
 
    // Wait until bucket is created before finishing
-   fmt.Printf("Waiting for bucket %q to be created...\n", bucketname+uniqueadr)
+   fmt.Printf("Waiting for bucket %q to be created...\n", bucketname+Uniqueadr)
 
    err = svc.WaitUntilBucketExists(&s3.HeadBucketInput{
-   Bucket: aws.String(bucketname+uniqueadr),
+   Bucket: aws.String(bucketname+Uniqueadr),
    })
    
    if err != nil { // check bucket is created 
-	   fmt.Println("Error occurred while waiting for bucket to be created, %v", bucketname+uniqueadr)
+	   fmt.Println("Error occurred while waiting for bucket to be created, %v", bucketname+Uniqueadr)
    }else {
-	   fmt.Printf("Bucket %q successfully created\n", bucketname+uniqueadr)
+	   fmt.Printf("Bucket %q successfully created\n", bucketname+Uniqueadr)
    }
    
-   publicbucket(bucketname) // make bucket public read only
+   Publicbucket(bucketname) // make bucket public read only
 }
 
 
 func Publicbucket (bucket string) {// make bucket public and read only
 	// Create S3 service client
-   svc := s3.New(sess)
+   svc := s3.New(Sess)
    
    
    readOnlyAnonUserPolicy := map[string]interface{}{ // add policy to map so can be sent
@@ -106,7 +94,7 @@ func Publicbucket (bucket string) {// make bucket public and read only
 				   "s3:GetObject",
 			   },
 			   "Resource": []string{
-				   fmt.Sprintf("arn:aws:s3:::%s/*", bucket+uniqueadr),
+				   fmt.Sprintf("arn:aws:s3:::%s/*", bucket+Uniqueadr),
 			   },
 		   },
 	   },
@@ -120,14 +108,14 @@ func Publicbucket (bucket string) {// make bucket public and read only
    }
    
    _, err = svc.PutBucketPolicy(&s3.PutBucketPolicyInput{
-	   Bucket: aws.String(bucket+uniqueadr),
+	   Bucket: aws.String(bucket+Uniqueadr),
 	   Policy: aws.String(string(policy)),
    })
    
    if err != nil {
 	   fmt.Println("Unable to update bucket policy %v", err)
    } else {
-	   fmt.Printf("Successfully set bucket %q's policy\n", bucket+uniqueadr)
+	   fmt.Printf("Successfully set bucket %q's policy\n", bucket+Uniqueadr)
    }
 
 }
@@ -135,7 +123,7 @@ func Publicbucket (bucket string) {// make bucket public and read only
 
 func Listitems (bucket string) {
 	// Create S3 service client
-   svc := s3.New(sess)
+   svc := s3.New(Sess)
    
    resp, err := svc.ListObjectsV2(&s3.ListObjectsV2Input{Bucket: aws.String(bucket)})
    if err != nil {
