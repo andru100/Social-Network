@@ -9,7 +9,6 @@ import (
     "encoding/json"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -28,57 +27,7 @@ Region: aws.String("us-east-2")},
 )
 var uniqueadr = "ajh46unique"
 
-type msgCmts struct {
-Username string `bson:"Username" json:"Username"`
-Comment string `bson:"Comment" json:"Comment"`
-Profpic string `bson:"Profpic" json:"Profpic"`
-}
-
-type Likes struct {
-Username string `bson:"Username" json:"Username"`
-Profpic string `bson:"Profpic" json:"Profpic"`
-}
-
-type PostData struct {
-Username     string  `bson:"Username" json:"Username"`
-SessionUser     string  `bson:"SessionUser" json:"SessionUser"`
-MainCmt string  `bson:"MainCmt" json:"MainCmt"`
-PostNum int  `bson:"PostNum" json:"PostNum"`
-Time string  `bson:"Time" json:"Time"`
-TimeStamp  int64  `bson:"TimeStamp" json:"TimeStamp"`
-Date string  `bson:"Date" json:"Date"`
-Comments [] msgCmts  `bson:"Comments" json:"Comments"`
-Likes [] Likes `bson:"Likes" json:"Likes"`
-}
-
-type usrsignin struct { 
-Username     string  `bson:"Username" json:"Username"`
-Password  string  `bson:"Password" json:"Password"`
-Email  string  `bson:"Email" json:"Email"`
-Bio string `bson:"Bio" json:"Bio"`
-Photos [] string `bson:"Photos" json:"Photos"`
-LastCommentNum int  `bson:"LastCommentNum" json:"LastCommentNum"`
-LikeSent Likes   `bson:"LikeSent" json:"LikeSent"`
-Posts  []PostData  `bson:"Posts" json:"Posts"`
-}
-
-//struct to hold retrived mongo doc
-type MongoFields struct {
-Key string `json:"key,omitempty"`
-ID primitive.ObjectID `bson:"_id, omitempty"`  
-Username     string  `bson:"Username" json:"Username"`
-Password  string  `bson:"Password" json:"Password"`
-Email  string  `bson:"Email" json:"Email"`
-Bio string `bson:"Bio" json:"Bio"`
-Profpic string `bson:"Profpic" json:"Profpic"`
-Photos [] string `bson:"Photos" json:"Photos"`
-LastCommentNum int  `bson:"LastCommentNum" json:"LastCommentNum"`
-LikeSent Likes   `bson:"LikeSent" json:"LikeSent"`
-Posts  []PostData  `bson:"Posts" json:"Posts"`
-}
-
-
-func connectedmngo () { // prints connected if all error checks passed
+func Connectedmngo (err error, err1 error) { // prints connected if all error checks passed
     if err != nil || err1 != nil {
         log.Fatal(err)
     }else {
@@ -86,16 +35,16 @@ func connectedmngo () { // prints connected if all error checks passed
     }
 }
 
-func connectedaws () { // prints connected to aws if all error checks passed
+func Connectedaws (err2 error) { // prints connected to aws if all error checks passed
     if err2 != nil {
-        log.Fatal(err)
+        log.Fatal(err2)
     }else {
     fmt.Println("Connected to MongoDB!") 
     }
 }
 
 
-func listbuckets () {
+func Listbuckets () {
 	// Create S3 service client
    svc := s3.New(sess)
    
@@ -113,12 +62,11 @@ func listbuckets () {
    }
 }
 
-
-func createbucket (bucketname string) {// creates a s3 bucket with the name passed to it
+func Createbucket (bucketname string) {// creates a s3 bucket with the name passed to it
 	// Create S3 service client
    svc := s3.New(sess)
    
-   _, err = svc.CreateBucket(&s3.CreateBucketInput{
+   _, err := svc.CreateBucket(&s3.CreateBucketInput{
    Bucket: aws.String(bucketname+uniqueadr),// make bucket name unique
    })
    if err != nil {
@@ -142,7 +90,7 @@ func createbucket (bucketname string) {// creates a s3 bucket with the name pass
 }
 
 
-func publicbucket (bucket string) {// make bucket public and read only
+func Publicbucket (bucket string) {// make bucket public and read only
 	// Create S3 service client
    svc := s3.New(sess)
    
@@ -185,7 +133,7 @@ func publicbucket (bucket string) {// make bucket public and read only
 }
 
 
-func listitems (bucket string) {
+func Listitems (bucket string) {
 	// Create S3 service client
    svc := s3.New(sess)
    
@@ -209,7 +157,7 @@ func GetTempLoc(filename string) string { // get the temp location of files sent
 }
 
 
-func getfiletype(filename string) string { // takes filname and returns filetype
+func Getfiletype(filename string) string { // takes filname and returns filetype
 
 	runed:=[]rune(filename)
 	var result [][]rune
@@ -224,7 +172,7 @@ func getfiletype(filename string) string { // takes filname and returns filetype
 	return(string(result[0]))
 }
 
-func exitErrorf(msg string, args ...interface{}) {// hadles aws errors
+func ExitErrorf(msg string, args ...interface{}) {// hadles aws errors
     fmt.Fprintf(os.Stderr, msg+"\n", args...)
     os.Exit(1)
 }
