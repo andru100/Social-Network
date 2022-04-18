@@ -1,0 +1,25 @@
+export default async function Chkauth (){ //check if user has valid jwt
+    let jwt = localStorage.getItem('jwt_token');
+
+    let jwtObject = {
+      Data1: jwt
+    }
+
+    let options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(jwtObject),
+      }
+      
+      let url = 'http://backend:4001/chkauth'
+      let response = await fetch(url, options)
+      let convert = await response.json ()
+
+    if ( response.status === 401 || response.status === 400){
+      return false   
+     } else if ( response.status === 200){ // if password is a match return auth'd username
+      return convert.AuthdUser
+     }
+} 
