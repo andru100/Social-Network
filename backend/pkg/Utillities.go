@@ -3,12 +3,17 @@ package social
 import (
 	"context"
 	"fmt"
+    "log"
+    "strings"
+    "os"
+    "encoding/json"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+    "github.com/gin-gonic/gin"
 )
 
 // connect db globally so all funcs can use client rather than waste connections
@@ -71,6 +76,24 @@ LastCommentNum int  `bson:"LastCommentNum" json:"LastCommentNum"`
 LikeSent Likes   `bson:"LikeSent" json:"LikeSent"`
 Posts  []PostData  `bson:"Posts" json:"Posts"`
 }
+
+
+func connectedmngo () { // prints connected if all error checks passed
+    if err != nil || err1 != nil {
+        log.Fatal(err)
+    }else {
+    fmt.Println("Connected to MongoDB!") 
+    }
+}
+
+func connectedaws () { // prints connected to aws if all error checks passed
+    if err2 != nil {
+        log.Fatal(err)
+    }else {
+    fmt.Println("Connected to MongoDB!") 
+    }
+}
+
 
 func listbuckets () {
 	// Create S3 service client
