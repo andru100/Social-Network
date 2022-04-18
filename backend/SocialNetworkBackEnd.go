@@ -8,8 +8,7 @@ import (
     "go.mongodb.org/mongo-driver/bson/primitive"
     "github.com/aws/aws-sdk-go/aws"
     "github.com/aws/aws-sdk-go/aws/session"
-    // "github.com/andru100/Social-Network/backend/pkg"
-    "Social"
+    "github.com/andru100/Social-Network/backend/pkg"
 
 )
 
