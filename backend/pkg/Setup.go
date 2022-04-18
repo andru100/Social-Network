@@ -1,5 +1,9 @@
 package social
 
+	import (
+		"go.mongodb.org/mongo-driver/bson/primitive"
+	)
+
 	type MsgCmts struct {
 	Username string `bson:"Username" json:"Username"`
 	Comment string `bson:"Comment" json:"Comment"`
@@ -23,7 +27,7 @@ package social
 	Likes [] Likes `bson:"Likes" json:"Likes"`
 	}
 	
-	type usrsignin struct { 
+	type Usrsignin struct { 
 	Username     string  `bson:"Username" json:"Username"`
 	Password  string  `bson:"Password" json:"Password"`
 	Email  string  `bson:"Email" json:"Email"`

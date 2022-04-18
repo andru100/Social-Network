@@ -8,12 +8,8 @@ import (
         "time"
         "net/http"
         "github.com/gin-gonic/gin"
-        "go.mongodb.org/mongo-driver/mongo"
         "go.mongodb.org/mongo-driver/mongo/options"
-        "go.mongodb.org/mongo-driver/bson/primitive"
         "go.mongodb.org/mongo-driver/bson"
-        "github.com/aws/aws-sdk-go/aws"
-        "github.com/aws/aws-sdk-go/aws/session"
 )
 
 func PostMsg(c *gin.Context) {// std post creates doc from query, finds it and returns it

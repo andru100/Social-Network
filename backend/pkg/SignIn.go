@@ -6,12 +6,7 @@ import (
 	"time"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/bson"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 )
 
 func Signin (c *gin.Context) {// takes id and sets up bucket and mongodb
@@ -39,10 +34,11 @@ func Signin (c *gin.Context) {// takes id and sets up bucket and mongodb
     // Find the document that mathes the id from the request.
 	// call the collection's Find() method and return object into result
     err := collection.FindOne(ctx, bson.M{"Username": userid}).Decode(&result)
+    CheckError(err)
 
     if result.Password == reqbody.Password {
         fmt.Println("password matches")
-        token := makejwt(userid, true) // make jwt
+        token := Makejwt(userid, true) // make jwt
         c.JSON(http.StatusOK, gin.H{ 
 				"token": token,
 			     })

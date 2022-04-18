@@ -1,15 +1,9 @@
 package social
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/dgrijalva/jwt-go"
 )
 

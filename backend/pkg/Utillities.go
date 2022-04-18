@@ -1,16 +1,12 @@
 package social
 
 import (
-	"context"
 	"fmt"
     "log"
     "strings"
     "os"
     "encoding/json"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/Session"
 	"github.com/aws/aws-sdk-go/service/s3"
     "github.com/gin-gonic/gin"
 )
@@ -180,5 +176,12 @@ func CORSMiddleware() gin.HandlerFunc { // cors func to allow body and acces fro
         }
 
         c.Next()
+    }
+
+}
+
+func CheckError (err error) {
+    if err != nil {
+        fmt.Println(err)
     }
 }

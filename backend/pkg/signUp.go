@@ -7,18 +7,14 @@ package social
 		"time"
 		"net/http"
 		"github.com/gin-gonic/gin"
-		"go.mongodb.org/mongo-driver/mongo"
-		"go.mongodb.org/mongo-driver/mongo/options"
 		"go.mongodb.org/mongo-driver/bson/primitive"
 		"go.mongodb.org/mongo-driver/bson"
-		"github.com/aws/aws-sdk-go/aws"
-		"github.com/aws/aws-sdk-go/aws/session"
 	)
 
 func Signup (c *gin.Context) {// takes id and sets up bucket and mongodb
     userid := c.Param("userid") // get id from url request
     fmt.Println("userid is ", userid)
-    social.createbucket(userid) // create bucket to store users files
+    Createbucket(userid) // create bucket to store users files
 
     var reqbody Usrsignin // declare new instance of struct type
 
@@ -62,7 +58,7 @@ func Signup (c *gin.Context) {// takes id and sets up bucket and mongodb
     
     if result1.Password == reqbody.Password {
         fmt.Println("password matches")
-        token := makejwt(userid, true) // make jwt with user id and auth true
+        token := Makejwt(userid, true) // make jwt with user id and auth true
         c.JSON(http.StatusOK, gin.H{ //make header with token in and send
 				"token": token,
 		})

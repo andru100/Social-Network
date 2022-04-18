@@ -8,12 +8,8 @@ import (
 	"time"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/bson"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 )
 
 func Stdget(c *gin.Context) {// gets comments for a specified user/ all users if on home feed page
@@ -88,7 +84,7 @@ func Stdget(c *gin.Context) {// gets comments for a specified user/ all users if
         c.IndentedJSON(http.StatusOK, json2send)
     } else if qry.Page == "media" { // if page is users media section
         err := collection.FindOne(ctx, bson.M{"Username": qry.UserName}).Decode(&currentDoc)
-
+        CheckError(err)
         c.IndentedJSON(http.StatusOK, currentDoc)
 
     } else{
