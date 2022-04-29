@@ -11,7 +11,7 @@ export default function RenderSignin () {
 	useEffect( () => { //check if signed in and go to profile page
 		ChkAuth().then(user => {
 		  if (user) {
-		  Navigate("/profile/x"+user)
+		  Navigate("/profile/x/"+user)
 		  } 
 		})
 	},[]);
@@ -35,7 +35,7 @@ export default function RenderSignin () {
 		body: JSON.stringify(signindata),
 		}
 		
-		let signinurl = 'http://backend:4001/signin/' + username
+		let signinurl = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT + '/signin/' + username
 		
 		// post request to check sign in details
 		let response = await fetch(signinurl, options)

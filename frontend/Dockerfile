@@ -1,17 +1,27 @@
-FROM node:14.17.4-alpine
+FROM node:14.17.4-alpine as build 
 
-WORKDIR /app
+ARG DOMAIN
 
-ENV PATH /app/node_modules/.bin:$PATH
+ARG PORT
 
-COPY . .
+WORKDIR /app 
 
-RUN npm install --silent
+COPY ./package.json . 
+COPY ./package-lock.json . 
 
-RUN npm install react-scripts@4.0.0 -g --silent
+RUN npm install 
 
-EXPOSE 3000
+COPY ./public ./public/ 
+COPY ./src ./src/ 
 
-CMD ["npm", "start"]
+RUN REACT_APP_BACKEND_ADDRESS=${DOMAIN} \
+  REACT_APP_BACKEND_PORT=${PORT} \ 
+  npm run build 
 
+FROM nginx:1.17-alpine 
 
+COPY --from=build /app/build /usr/share/nginx/html 
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

@@ -46,7 +46,7 @@ function Home () {
       body: JSON.stringify(data),
       }
   
-      let Url = 'http://backend:4001/getCmt'
+      let Url = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT +'/getCmt'
       let response = await fetch(Url, options)
       let convert = await response.json ()
   
@@ -202,7 +202,7 @@ return (
                            <div className="timeline-body">
                               <div className="timeline-header">
                                  <span className="userimage"><img src={cmt.Profpic} alt=""/></span>
-                                 <a className="username" href= {"http://backend:3000/Profile/x/"+userData.Username}>{userData.Username}</a>
+                                 <a className="username" href= {"http://locahost:3000/Profile/x/"+userData.Username}>{userData.Username}</a>
                               </div>
                               <div className="timeline-content">
                                  <p>
@@ -221,7 +221,7 @@ return (
                                       userData.Likes.map((Likes)=> (
                                           <div className="timeline-header">
                                           {<span className="userimage"><img src={Likes.Profpic} alt=""/></span>  }
-                                          <a ClassName = "username" href= {"http://backend:3000/Profile/x/"+Likes.Username}>{Likes.Username}</a> 
+                                          <a ClassName = "username" href= {"http://locahost:3000/Profile/x/"+Likes.Username}>{Likes.Username}</a> 
                                           </div> 
                                       ))
                                     } 
@@ -229,7 +229,7 @@ return (
                                       userData.Comments.map((replys)=> (
                                        <div className="timeline-header">
                                           {<span className="userimage"><img src={replys.Profpic} alt=""/></span> }
-                                          <span ><a href= {"http://backend:3000/Profile/x/"+replys.Username}>{replys.Username}</a> <small></small></span>
+                                          <span ><a href= {"http://locahost:3000/Profile/x/"+replys.Username}>{replys.Username}</a> <small></small></span>
                                           <div>
                                              <span>{replys.Comment}</span>
                                           </div>

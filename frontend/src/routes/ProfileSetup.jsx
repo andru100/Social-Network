@@ -51,7 +51,7 @@ export default function RenderProfileSetup () {
     body: JSON.stringify(data),
     }
 
-    let Url = 'http://backend:4001/getCmt'
+    let Url = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT + '/getCmt'
     let response = await fetch(Url, options)
     let convert = await response.json ()
 
@@ -81,7 +81,7 @@ export default function RenderProfileSetup () {
     body: JSON.stringify(data),
     }
 
-    let postUrl = 'http://backend:4001/updatebio'
+    let postUrl = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT + '/updatebio'
     let response = await fetch(postUrl, options)
     let convert = await response.json ()
 
@@ -108,7 +108,7 @@ export default function RenderProfileSetup () {
         body: data, 
       }
 
-      let postUrl = 'http://backend:4001/postfile/' + userName 
+      let postUrl = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT + '/postfile/' + userName 
       let response = await fetch(postUrl, options)
       let convert = await response.json ()
       if ( response.status === 401 || response.status === 400){
@@ -141,7 +141,7 @@ export default function RenderProfileSetup () {
         body: data, 
       }
 
-      let ProfUrl = 'http://backend:4001/postfile/' + userName
+      let ProfUrl = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT + '/postfile/' + userName
       let response = await fetch(ProfUrl, options)
       let convert = await response.json ()
       document.getElementById("profpic11").src = convert.Profpic // get posted img address and change profile picture

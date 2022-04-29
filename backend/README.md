@@ -2,14 +2,6 @@
 
 Backend to project Social Network. Written in GO, utilising Gin. MongoDB, AWS S3 and SNS.
 
-In order to run simply type "go run ."
+To run locally the API requires an aws access key present on the server. If deploying on aws ensure IAM roles are configured correctly. The app only needs s3 access. 
 
-The API requires an aws access key present on the server.
-
-Once running the API will connect to aws and mongo db. Its capable of signing users up, creating storage and issuing/validating JWT authentication. 
-
-The front end to this project is in another repository named "Social Network"
-
-# TODO
-
-Seperate functions into packages
+Once running the API will connect to aws s3 and mongo db. Its capable of signing users up, creating storage and issuing/validating JWT authentication. 

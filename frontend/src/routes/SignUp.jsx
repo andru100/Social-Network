@@ -30,7 +30,7 @@ export default function RenderSignUp () {
     body: JSON.stringify(signupdata),
     }
     
-    let signinurl = 'http://backend:4001/signup/' + username
+    let signinurl = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT + '/signup/' + username
   
     let response = await fetch(signinurl, options)
     let convert = await response.json ()

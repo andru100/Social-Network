@@ -13,7 +13,7 @@ export default async function Chkauth (){ //check if user has valid jwt
       body: JSON.stringify(jwtObject),
       }
       
-      let url = 'http://backend:4001/chkauth'
+      let url = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT + '/chkauth'
       let response = await fetch(url, options)
       let convert = await response.json ()
 

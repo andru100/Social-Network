@@ -12,7 +12,7 @@ export default async function SendDdata (Page, msgType, reply, Liker, iD, Post) 
     body: JSON.stringify(data),
     }
 
-    let postUrl = 'http://backend:4001/postMsg'
+    let postUrl = process.env.REACT_APP_BACKEND_ADDRESS + process.env.REACT_APP_BACKEND_PORT + '/postMsg'
     let response = await fetch(postUrl, options)
     let convert = await response.json ()
 

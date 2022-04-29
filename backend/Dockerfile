@@ -20,7 +20,7 @@ RUN go get "github.com/andru100/Social-Network"
 
 RUN go mod download
 
-RUN go build -o /backend
+RUN go build -o  /backend
 
 EXPOSE 4001
 
